@@ -1,8 +1,13 @@
+using System;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour, IDamageable
 {
     public static PlayerController Instance { get; private set; }
+
+    public event EventHandler OnTookDamage;
+
+    public float CurrentHealth => _currentHealth;
     
     [SerializeField] private float maxHealth = 100f;
     [SerializeField] private float moveSpeed = 2.8f;
@@ -37,12 +42,13 @@ public class PlayerController : MonoBehaviour, IDamageable
     public void TakeDamage(float amount)
     {
         _currentHealth -= amount;
+        
+        OnTookDamage?.Invoke(this, EventArgs.Empty);
+        
         if (_currentHealth <= 0)
         {
             Destroy(gameObject);
             // Handle game over...
         }
     }
-    
-    
 }
