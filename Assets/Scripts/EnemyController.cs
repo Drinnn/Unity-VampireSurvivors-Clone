@@ -59,9 +59,5 @@ public class EnemyController : MonoBehaviour
                 _currentAttackTimer = attackSpeed;
             }
         }
-        else
-        {
-            _currentAttackTimer = 0f;
-        }
     }
 }
