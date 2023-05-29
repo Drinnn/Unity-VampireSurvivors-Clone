@@ -23,8 +23,6 @@ public class EnemyController : MonoBehaviour
         HandlePlayerLock();
         HandlePlayerAttack();
         HandleMovement();
-        
-        Debug.Log(_isTargetLocked);
     }
 
     private void HandleMovement()
@@ -60,6 +58,10 @@ public class EnemyController : MonoBehaviour
                 PlayerController.Instance.TakeDamage(attackDamage);
                 _currentAttackTimer = attackSpeed;
             }
+        }
+        else
+        {
+            _currentAttackTimer = 0f;
         }
     }
 }
