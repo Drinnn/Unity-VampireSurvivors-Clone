@@ -9,16 +9,19 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] private Transform minSpawnPointTransform;
     [SerializeField] private Transform maxSpawnPointTransform;
     [SerializeField] private float despawnBuffer = 4f;
+    [SerializeField] private int enemiesAmountToCheckPerFrame = 10;
 
     private Transform _playerTransform;
     
     private float _spawnTimer;
     private float _despawnDistance;
-    private List<GameObject> _enemiesList;
+    private List<GameObject> _spawnedEnemiesList;
+    private int _enemyToCheckIndex;
 
     private void Awake()
     {
         _spawnTimer = timeToSpawn;
+        _spawnedEnemiesList = new List<GameObject>();
     }
 
     private void Start()
@@ -32,12 +35,54 @@ public class EnemySpawner : MonoBehaviour
     {
         transform.position = _playerTransform.position;
         
+        HandleSpawn();
+        HandleEnemiesCleanup();
+    }
+
+    private void HandleSpawn()
+    {
         _spawnTimer -= Time.deltaTime;
         if (_spawnTimer <= 0)
         {
             _spawnTimer = timeToSpawn;
             GameObject enemy = Instantiate(enemyPrefab, GetRandomSpawnPoint(), Quaternion.identity);
-            _enemiesList.Add(enemy);
+            _spawnedEnemiesList.Add(enemy);
+        }
+    }
+
+    private void HandleEnemiesCleanup()
+    {
+        int checkTargetIndex = _enemyToCheckIndex + enemiesAmountToCheckPerFrame;
+        while (_enemyToCheckIndex < checkTargetIndex)
+        {
+            if (_enemyToCheckIndex < _spawnedEnemiesList.Count)
+            {
+                if (_spawnedEnemiesList[_enemyToCheckIndex] != null)
+                {
+                    if (Vector3.Distance(transform.position,
+                            _spawnedEnemiesList[_enemyToCheckIndex].transform.position) > _despawnDistance)
+                    {
+                        Destroy(_spawnedEnemiesList[_enemyToCheckIndex]);
+                        
+                        _spawnedEnemiesList.RemoveAt(_enemyToCheckIndex);
+                        checkTargetIndex--;
+                    }
+                    else
+                    {
+                        _enemyToCheckIndex++;
+                    }
+                }
+                else
+                {
+                    _spawnedEnemiesList.RemoveAt(_enemyToCheckIndex);
+                    checkTargetIndex--;
+                }
+            }
+            else
+            {
+                _enemyToCheckIndex = 0;
+                checkTargetIndex = 0;
+            }
         }
     }
 
