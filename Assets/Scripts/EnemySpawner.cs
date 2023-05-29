@@ -1,4 +1,4 @@
-using System;
+using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -8,10 +8,13 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] private GameObject enemyPrefab;
     [SerializeField] private Transform minSpawnPointTransform;
     [SerializeField] private Transform maxSpawnPointTransform;
+    [SerializeField] private float despawnBuffer = 4f;
 
     private Transform _playerTransform;
     
     private float _spawnTimer;
+    private float _despawnDistance;
+    private List<GameObject> _enemiesList;
 
     private void Awake()
     {
@@ -21,6 +24,8 @@ public class EnemySpawner : MonoBehaviour
     private void Start()
     {
         _playerTransform = PlayerController.Instance.transform;
+
+        _despawnDistance = Vector3.Distance(transform.position, maxSpawnPointTransform.position) + despawnBuffer;
     }
 
     private void Update()
@@ -31,7 +36,8 @@ public class EnemySpawner : MonoBehaviour
         if (_spawnTimer <= 0)
         {
             _spawnTimer = timeToSpawn;
-            Instantiate(enemyPrefab, GetRandomSpawnPoint(), Quaternion.identity);
+            GameObject enemy = Instantiate(enemyPrefab, GetRandomSpawnPoint(), Quaternion.identity);
+            _enemiesList.Add(enemy);
         }
     }
 
