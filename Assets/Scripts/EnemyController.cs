@@ -1,19 +1,22 @@
 using UnityEngine;
 
-public class EnemyController : MonoBehaviour
+public class EnemyController : MonoBehaviour, IDamageable
 {
+    [SerializeField] private float maxHealth = 100f;
     [SerializeField] private float moveSpeed = 1.5f;
 
     [SerializeField] private float attackSpeed = 1f;
     [SerializeField] private float attackDamage = 5f;
     [SerializeField] private float attackRadius = 0.8f;
 
+    private float _currentHealth;
     private Transform _target;
     private bool _isTargetLocked;
     private float _currentAttackTimer;
 
     private void Awake()
     {
+        _currentHealth = maxHealth;
         _target = FindObjectOfType<PlayerController>().transform;
         _currentAttackTimer = 0;
     }
@@ -58,6 +61,16 @@ public class EnemyController : MonoBehaviour
                 PlayerController.Instance.TakeDamage(attackDamage);
                 _currentAttackTimer = attackSpeed;
             }
+        }
+    }
+    
+    public void TakeDamage(float amount)
+    {
+        _currentHealth -= amount;
+        
+        if (_currentHealth <= 0)
+        {
+            Destroy(gameObject);
         }
     }
 }
