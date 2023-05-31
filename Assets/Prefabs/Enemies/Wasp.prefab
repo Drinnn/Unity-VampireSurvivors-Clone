@@ -97,6 +97,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 928fc582e7e00b74bacf25a9e79cf486, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enemyController: {fileID: 4805862255948861135}
+  baseColor: {r: 1, g: 1, b: 1, a: 1}
+  onDamageColor: {r: 1, g: 0.2028302, b: 0.2028302, a: 0}
+  damageTransitionTime: 0.3
   spriteTransform: {fileID: 4805862255185155999}
   animationSpeed: 0.5
   minSize: 0.9
@@ -185,6 +189,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6cc3d130fb71990498b950fc64e620af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  animator: {fileID: 4805862255185155993}
+  maxHealth: 100
   moveSpeed: 1.5
   attackSpeed: 1
   attackDamage: 5

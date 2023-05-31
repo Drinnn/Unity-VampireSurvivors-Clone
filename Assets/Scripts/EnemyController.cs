@@ -1,7 +1,17 @@
+using System;
+using System.Collections;
 using UnityEngine;
 
 public class EnemyController : MonoBehaviour, IDamageable
 {
+    public event EventHandler<OnTookDamageEventArgs> OnTookDamage;
+    public class OnTookDamageEventArgs : EventArgs
+    {
+        public bool IsFatal;
+    }
+
+    [SerializeField] private EnemyAnimator animator;
+    
     [SerializeField] private float maxHealth = 100f;
     [SerializeField] private float moveSpeed = 1.5f;
 
@@ -67,10 +77,21 @@ public class EnemyController : MonoBehaviour, IDamageable
     public void TakeDamage(float amount)
     {
         _currentHealth -= amount;
-        
         if (_currentHealth <= 0)
         {
-            Destroy(gameObject);
+            OnTookDamage?.Invoke(this, new OnTookDamageEventArgs{ IsFatal = true });
+            StartCoroutine(nameof(Death));
         }
+        else
+        {
+            OnTookDamage?.Invoke(this, new OnTookDamageEventArgs{ IsFatal = false });
+        }
+    }
+
+    private IEnumerator Death()
+    {
+        yield return new WaitForSeconds(animator.DamageTransitionTime);
+        
+        Destroy(gameObject);
     }
 }
