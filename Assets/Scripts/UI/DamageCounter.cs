@@ -5,6 +5,7 @@ public class DamageCounter : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI damageText;
     [SerializeField] private float lifetime = 2f;
+    [SerializeField] private float floatingSpeed = .5f;
 
     private float _lifetimeTimer;
 
@@ -16,6 +17,8 @@ public class DamageCounter : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+        transform.position += Vector3.up * floatingSpeed * Time.deltaTime;
     }
 
     public void Setup(int damageAmount)
