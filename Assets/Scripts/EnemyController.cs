@@ -20,13 +20,18 @@ public class EnemyController : MonoBehaviour, IDamageable
     [SerializeField] private float attackRadius = 0.8f;
 
     private float _currentHealth;
+    private float _currentMoveSpeed;
     private Transform _target;
     private bool _isTargetLocked;
     private float _currentAttackTimer;
+    private float _knockBackTime;
+    private float _knockBackTimer;
+    private float _knockBackMultiplier;
 
     private void Awake()
     {
         _currentHealth = maxHealth;
+        _currentMoveSpeed = moveSpeed;
         _target = FindObjectOfType<PlayerController>().transform;
         _currentAttackTimer = 0;
     }
@@ -36,6 +41,7 @@ public class EnemyController : MonoBehaviour, IDamageable
         HandlePlayerLock();
         HandlePlayerAttack();
         HandleMovement();
+        HandleKnockBack();
     }
 
     private void HandleMovement()
@@ -44,7 +50,7 @@ public class EnemyController : MonoBehaviour, IDamageable
         {
             Vector3 movementDirection = (_target.position - transform.position).normalized;
 
-            transform.position += movementDirection * moveSpeed * Time.deltaTime;
+            transform.position += movementDirection * _currentMoveSpeed * Time.deltaTime;
         }
     }
 
@@ -73,6 +79,25 @@ public class EnemyController : MonoBehaviour, IDamageable
             }
         }
     }
+
+    private void HandleKnockBack()
+    {
+        if (_knockBackTimer > 0)
+        {
+            _knockBackTimer -= Time.deltaTime;
+
+            if (_currentMoveSpeed > 0)
+            {
+                _currentMoveSpeed = -_currentMoveSpeed * _knockBackMultiplier;
+            }
+
+            if (_knockBackTimer <= 0)
+            {
+                _knockBackTimer = 0;
+                _currentMoveSpeed = moveSpeed;
+            }
+        }
+    }
     
     public void TakeDamage(float amount)
     {
@@ -86,6 +111,15 @@ public class EnemyController : MonoBehaviour, IDamageable
         {
             OnTookDamage?.Invoke(this, new OnTookDamageEventArgs{ IsFatal = false });
         }
+    }
+    
+    public void TakeDamageWithKnockBack(float amount, float knockBackTime, float knockBackMultiplier)
+    {
+        TakeDamage(amount);
+        
+        _knockBackTime = knockBackTime;
+        _knockBackTimer = _knockBackTime;
+        _knockBackMultiplier = knockBackMultiplier;
     }
 
     private IEnumerator Death()

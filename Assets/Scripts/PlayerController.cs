@@ -51,4 +51,9 @@ public class PlayerController : MonoBehaviour, IDamageable
             // Handle game over...
         }
     }
+
+    public void TakeDamageWithKnockBack(float amount, float knockBackTime, float knockBackMultiplier)
+    {
+        TakeDamage(amount);
+    }
 }
