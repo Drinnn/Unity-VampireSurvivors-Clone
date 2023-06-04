@@ -102,6 +102,7 @@ public class EnemyController : MonoBehaviour, IDamageable
     public void TakeDamage(float amount)
     {
         _currentHealth -= amount;
+        DamageCounterUI.Instance.RenderTextDamage(amount, transform.position);
         if (_currentHealth <= 0)
         {
             OnTookDamage?.Invoke(this, new OnTookDamageEventArgs{ IsFatal = true });
