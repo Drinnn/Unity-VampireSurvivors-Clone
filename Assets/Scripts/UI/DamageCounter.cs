@@ -15,16 +15,19 @@ public class DamageCounter : MonoBehaviour
 
         if (_lifetimeTimer <= 0)
         {
-            Destroy(gameObject);
+            DamageCounterUI.Instance.PlaceDamageCounterInPool(this);
         }
 
         transform.position += Vector3.up * floatingSpeed * Time.deltaTime;
     }
 
-    public void Setup(int damageAmount)
+    public void Setup(int damageAmount, Vector3 location)
     {
         _lifetimeTimer = lifetime;
 
         damageText.text = damageAmount.ToString();
+        transform.position = location;
+        
+        gameObject.SetActive(true);
     }
 }
