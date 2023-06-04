@@ -27,9 +27,9 @@ public class SpinWeapon : MonoBehaviour
         _spawnTimer -= Time.deltaTime;
         if (_spawnTimer <= 0)
         {
-            Transform weapon = Instantiate(weaponToSpawn, weaponToSpawn.position, weaponToSpawn.rotation, holder);
-            weapon.gameObject.SetActive(true);
-            Destroy(weapon.gameObject, weaponLifetime);
+            GameObject weapon = Instantiate(weaponToSpawn, weaponToSpawn.position, weaponToSpawn.rotation, holder).gameObject;
+            weapon.SetActive(true);
+            weapon.GetComponent<IWeaponObject>().Setup(weaponLifetime);
             
             _spawnTimer = timeBetweenSpawns;
         }
