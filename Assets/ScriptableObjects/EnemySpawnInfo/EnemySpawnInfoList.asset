@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 55b6aacfc113d4a46bef3f97a571797d, type: 3}
+  m_Name: EnemySpawnInfoList
+  m_EditorClassIdentifier: 
+  list:
+  - {fileID: 11400000, guid: 209b74f9f9dbd8d49885ceb1d3e5fa60, type: 2}
+  - {fileID: 11400000, guid: f7095cb1f4b677249ab4e335296d02ba, type: 2}
+  - {fileID: 11400000, guid: 92d6c1463e15c8c4bbb14d3081e19f0c, type: 2}
+  - {fileID: 11400000, guid: dafcdf259e4e79b40ae42249bc5dce07, type: 2}
+  - {fileID: 11400000, guid: 5e46d5788f9e9c54abfd027ecd586739, type: 2}

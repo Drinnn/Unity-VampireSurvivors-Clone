@@ -1,26 +1,54 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
+public enum EnemyRarity
+{
+    COMMON,
+    RARE,
+    EPIC
+}
+
 public class EnemySpawner : MonoBehaviour
 {
-    [SerializeField] private float timeToSpawn = 3f;
-    [SerializeField] private GameObject enemyPrefab;
+    [Header("Spawn config")] 
+    [SerializeField] private EnemySpawnInfoListSO enemySpawnInfoListSO;
+    [SerializeField] private RaritySpawnInfoListSO raritySpawnInfoListSO;
+
+    [Header("Transform Config")]
     [SerializeField] private Transform minSpawnPointTransform;
     [SerializeField] private Transform maxSpawnPointTransform;
+    
+    [Header("Despawn Config")]
     [SerializeField] private float despawnBuffer = 4f;
     [SerializeField] private int enemiesAmountToCheckPerFrame = 10;
 
     private Transform _playerTransform;
-    
-    private float _spawnTimer;
+
+    private Dictionary<EnemySpawnInfoSO, bool> _populateEnemySpawnInfoSODictionary;
+    private Dictionary<EnemyRarity, List<GameObject>> _readyEnemiesSpawnInfoSOByRarityDictionary;
+
+    private float _passedTime;
+
     private float _despawnDistance;
     private List<GameObject> _spawnedEnemiesList;
     private int _enemyToCheckIndex;
 
     private void Awake()
     {
-        _spawnTimer = timeToSpawn;
+        _populateEnemySpawnInfoSODictionary = new Dictionary<EnemySpawnInfoSO, bool>();
+        foreach (var enemySpawnInfoSO in enemySpawnInfoListSO.list)
+        {
+            _populateEnemySpawnInfoSODictionary[enemySpawnInfoSO] = false;
+        }
+
+        _readyEnemiesSpawnInfoSOByRarityDictionary = new Dictionary<EnemyRarity, List<GameObject>>();
+        foreach (var raritySpawnInfoSO in raritySpawnInfoListSO.list)
+        {
+            _readyEnemiesSpawnInfoSOByRarityDictionary[raritySpawnInfoSO.rarity] = new List<GameObject>();
+        }
+        
         _spawnedEnemiesList = new List<GameObject>();
     }
 
@@ -35,19 +63,33 @@ public class EnemySpawner : MonoBehaviour
     {
         transform.position = _playerTransform.position;
         
+        _passedTime += Time.deltaTime;
+
+        if (_populateEnemySpawnInfoSODictionary.Any(populatedEnemySpawnInfoSOKv => populatedEnemySpawnInfoSOKv.Value == false))
+        {
+            foreach (var populateEnemySpawnInfoSOKv in _populateEnemySpawnInfoSODictionary.Where(populatedEnemySpawnInfoSOKv => populatedEnemySpawnInfoSOKv.Value == false))
+            {
+                if (_passedTime >= populateEnemySpawnInfoSOKv.Key.spawnAfter)
+                {
+                    _readyEnemiesSpawnInfoSOByRarityDictionary[populateEnemySpawnInfoSOKv.Key.enemyRarity].Add(populateEnemySpawnInfoSOKv.Key.enemyPrefab);
+                    _populateEnemySpawnInfoSODictionary[populateEnemySpawnInfoSOKv.Key] = true;
+                }
+            }
+        }
+
         HandleSpawn();
         HandleEnemiesCleanup();
     }
 
     private void HandleSpawn()
     {
-        _spawnTimer -= Time.deltaTime;
-        if (_spawnTimer <= 0)
-        {
-            _spawnTimer = timeToSpawn;
-            GameObject enemy = Instantiate(enemyPrefab, GetRandomSpawnPoint(), Quaternion.identity);
-            _spawnedEnemiesList.Add(enemy);
-        }
+        // _commonSpawnTimer -= Time.deltaTime;
+        // if (_commonSpawnTimer <= 0)
+        // {
+        //     _commonSpawnTimer = commonSpawnTime;
+        //     GameObject enemy = Instantiate(enemyPrefab, GetRandomSpawnPoint(), Quaternion.identity);
+        //     _spawnedEnemiesList.Add(enemy);
+        // }
     }
 
     private void HandleEnemiesCleanup()
