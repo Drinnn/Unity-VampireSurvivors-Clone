@@ -28,6 +28,7 @@ public class EnemySpawner : MonoBehaviour
 
     private Dictionary<EnemySpawnInfoSO, bool> _populateEnemySpawnInfoSODictionary;
     private Dictionary<EnemyRarity, List<GameObject>> _readyEnemiesSpawnInfoSOByRarityDictionary;
+    private Dictionary<EnemyRarity, float> _raritiesTimerDictionary;
 
     private float _passedTime;
 
@@ -36,6 +37,11 @@ public class EnemySpawner : MonoBehaviour
     private int _enemyToCheckIndex;
 
     private void Awake()
+    {
+        _spawnedEnemiesList = new List<GameObject>();
+    }
+
+    private void Start()
     {
         _populateEnemySpawnInfoSODictionary = new Dictionary<EnemySpawnInfoSO, bool>();
         foreach (var enemySpawnInfoSO in enemySpawnInfoListSO.list)
@@ -48,12 +54,13 @@ public class EnemySpawner : MonoBehaviour
         {
             _readyEnemiesSpawnInfoSOByRarityDictionary[raritySpawnInfoSO.rarity] = new List<GameObject>();
         }
-        
-        _spawnedEnemiesList = new List<GameObject>();
-    }
 
-    private void Start()
-    {
+        _raritiesTimerDictionary = new Dictionary<EnemyRarity, float>();
+        foreach (var raritySpawnInfoSO in raritySpawnInfoListSO.list)
+        {
+            _raritiesTimerDictionary[raritySpawnInfoSO.rarity] = raritySpawnInfoSO.spawnTime;
+        }
+        
         _playerTransform = PlayerController.Instance.transform;
 
         _despawnDistance = Vector3.Distance(transform.position, maxSpawnPointTransform.position) + despawnBuffer;
@@ -65,9 +72,40 @@ public class EnemySpawner : MonoBehaviour
         
         _passedTime += Time.deltaTime;
 
+        HandleTimers();
+        HandleEnemiesPopulate();
+        HandleEnemiesCleanup();
+    }
+
+    private void HandleTimers()
+    {
+        foreach (var rarity in _raritiesTimerDictionary.Keys.ToList())
+        {
+            _raritiesTimerDictionary[rarity] -= Time.deltaTime;
+            if (_raritiesTimerDictionary[rarity] <= 0)
+            {
+             var raritySpawnInfo =
+                        raritySpawnInfoListSO.list.First(raritySpawnInfoSO => raritySpawnInfoSO.rarity == rarity);
+             _raritiesTimerDictionary[rarity] = raritySpawnInfo.spawnTime;
+                HandleSpawn(rarity);
+            }
+        }
+    }
+
+    private void HandleSpawn(EnemyRarity rarity)
+    {
+       
+        var rarityReadyEnemiesKv = _readyEnemiesSpawnInfoSOByRarityDictionary.First(readyEnemySpawnInfoSOKv => readyEnemySpawnInfoSOKv.Key == rarity);
+        var enemyToSpawn = rarityReadyEnemiesKv.Value[Random.Range(0, rarityReadyEnemiesKv.Value.Count)];
+        GameObject enemy = Instantiate(enemyToSpawn, GetRandomSpawnPoint(), Quaternion.identity);
+        _spawnedEnemiesList.Add(enemyToSpawn);
+    }
+
+    private void HandleEnemiesPopulate()
+    {
         if (_populateEnemySpawnInfoSODictionary.Any(populatedEnemySpawnInfoSOKv => populatedEnemySpawnInfoSOKv.Value == false))
         {
-            foreach (var populateEnemySpawnInfoSOKv in _populateEnemySpawnInfoSODictionary.Where(populatedEnemySpawnInfoSOKv => populatedEnemySpawnInfoSOKv.Value == false))
+            foreach (var populateEnemySpawnInfoSOKv in _populateEnemySpawnInfoSODictionary.Where(populatedEnemySpawnInfoSOKv => populatedEnemySpawnInfoSOKv.Value == false).ToList())
             {
                 if (_passedTime >= populateEnemySpawnInfoSOKv.Key.spawnAfter)
                 {
@@ -76,20 +114,6 @@ public class EnemySpawner : MonoBehaviour
                 }
             }
         }
-
-        HandleSpawn();
-        HandleEnemiesCleanup();
-    }
-
-    private void HandleSpawn()
-    {
-        // _commonSpawnTimer -= Time.deltaTime;
-        // if (_commonSpawnTimer <= 0)
-        // {
-        //     _commonSpawnTimer = commonSpawnTime;
-        //     GameObject enemy = Instantiate(enemyPrefab, GetRandomSpawnPoint(), Quaternion.identity);
-        //     _spawnedEnemiesList.Add(enemy);
-        // }
     }
 
     private void HandleEnemiesCleanup()

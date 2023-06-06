@@ -190,7 +190,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 5039118670885194740}
-  maxHealth: 30
+  maxHealth: 10
   moveSpeed: 0.2
   attackSpeed: 0.3
   attackDamage: 30

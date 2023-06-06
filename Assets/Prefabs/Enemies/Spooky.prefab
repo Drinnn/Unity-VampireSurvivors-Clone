@@ -194,4 +194,4 @@ MonoBehaviour:
   moveSpeed: 1
   attackSpeed: 1
   attackDamage: 40
-  attackRadius: 2
+  attackRadius: 1.5

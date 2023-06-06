@@ -15,4 +15,4 @@ MonoBehaviour:
   enemyName: Spooky
   enemyRarity: 2
   enemyPrefab: {fileID: 7156527333799967057, guid: d2de31fa9315e4b4083daac7677864b6, type: 3}
-  spawnAfter: 210
+  spawnAfter: 60

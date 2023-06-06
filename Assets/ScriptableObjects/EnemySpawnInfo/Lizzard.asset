@@ -15,4 +15,4 @@ MonoBehaviour:
   enemyName: Lizzard
   enemyRarity: 1
   enemyPrefab: {fileID: 3835224063210897245, guid: dd98ca6f792123043a6c3dbdbffd6e2e, type: 3}
-  spawnAfter: 140
+  spawnAfter: 40

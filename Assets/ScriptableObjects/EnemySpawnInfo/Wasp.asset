@@ -15,4 +15,4 @@ MonoBehaviour:
   enemyName: Wasp
   enemyRarity: 0
   enemyPrefab: {fileID: 4805862255948861123, guid: 519dc352197520f4ebb1169b5a9c2b7f, type: 3}
-  spawnAfter: 45
+  spawnAfter: 10

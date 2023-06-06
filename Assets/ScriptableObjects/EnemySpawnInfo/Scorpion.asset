@@ -15,4 +15,4 @@ MonoBehaviour:
   enemyName: Scorpion
   enemyRarity: 1
   enemyPrefab: {fileID: 6767547579927544909, guid: 5b8e25b2418244346913cfd23b3933aa, type: 3}
-  spawnAfter: 90
+  spawnAfter: 20
