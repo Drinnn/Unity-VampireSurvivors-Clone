@@ -96,9 +96,12 @@ public class EnemySpawner : MonoBehaviour
     {
        
         var rarityReadyEnemiesKv = _readyEnemiesSpawnInfoSOByRarityDictionary.First(readyEnemySpawnInfoSOKv => readyEnemySpawnInfoSOKv.Key == rarity);
-        var enemyToSpawn = rarityReadyEnemiesKv.Value[Random.Range(0, rarityReadyEnemiesKv.Value.Count)];
-        GameObject enemy = Instantiate(enemyToSpawn, GetRandomSpawnPoint(), Quaternion.identity);
-        _spawnedEnemiesList.Add(enemyToSpawn);
+        if (rarityReadyEnemiesKv.Value.Count > 0)
+        {
+            var enemyToSpawn = rarityReadyEnemiesKv.Value[Random.Range(0, rarityReadyEnemiesKv.Value.Count)];
+            GameObject enemy = Instantiate(enemyToSpawn, GetRandomSpawnPoint(), Quaternion.identity);
+            _spawnedEnemiesList.Add(enemyToSpawn);  
+        }
     }
 
     private void HandleEnemiesPopulate()
