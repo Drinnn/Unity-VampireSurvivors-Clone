@@ -100,7 +100,7 @@ public class EnemySpawner : MonoBehaviour
         {
             var enemyToSpawn = rarityReadyEnemiesKv.Value[Random.Range(0, rarityReadyEnemiesKv.Value.Count)];
             GameObject enemy = Instantiate(enemyToSpawn, GetRandomSpawnPoint(), Quaternion.identity);
-            _spawnedEnemiesList.Add(enemyToSpawn);  
+            _spawnedEnemiesList.Add(enemy);  
         }
     }
 
