@@ -74,7 +74,7 @@ SpriteRenderer:
   m_SortingLayerID: 789234815
   m_SortingLayer: 1
   m_SortingOrder: 0
-  m_Sprite: {fileID: -1633049766, guid: 99f10abcf979e904b883da0c6922d74f, type: 3}
+  m_Sprite: {fileID: -237660802, guid: 99f10abcf979e904b883da0c6922d74f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -118,7 +118,7 @@ GameObject:
   - component: {fileID: 2575999542620760694}
   - component: {fileID: 5039118672202322594}
   m_Layer: 7
-  m_Name: Ice Block
+  m_Name: Wolf
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -190,8 +190,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 5039118670885194740}
-  maxHealth: 10
-  moveSpeed: 0.2
+  maxHealth: 20
+  moveSpeed: 1
   attackSpeed: 0.3
   attackDamage: 30
   attackRadius: 1
