@@ -195,3 +195,4 @@ MonoBehaviour:
   attackSpeed: 1
   attackDamage: 15
   attackRadius: 1
+  expBonusAmount: 8

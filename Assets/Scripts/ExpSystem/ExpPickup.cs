@@ -48,4 +48,9 @@ public class ExpPickup : MonoBehaviour
             Destroy(gameObject);    
         }
     }
+
+    public void AddExpBonus(float bonusAmount)
+    {
+        xpAmount += bonusAmount;
+    }
 }

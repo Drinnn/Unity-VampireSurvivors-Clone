@@ -19,6 +19,8 @@ public class EnemyController : MonoBehaviour, IDamageable
     [SerializeField] private float attackDamage = 5f;
     [SerializeField] private float attackRadius = 0.8f;
 
+    [SerializeField] private float expBonusAmount = 2f;
+
     private float _currentHealth;
     private float _currentMoveSpeed;
     private Transform _target;
@@ -105,6 +107,7 @@ public class EnemyController : MonoBehaviour, IDamageable
         DamageCounterUI.Instance.RenderTextDamage(amount, transform.position);
         if (_currentHealth <= 0)
         {
+            ExpSystem.Instance.SpawnExpPickup(transform.position, expBonusAmount);
             OnTookDamage?.Invoke(this, new OnTookDamageEventArgs{ IsFatal = true });
             StartCoroutine(nameof(Death));
         }

@@ -90,6 +90,7 @@ MonoBehaviour:
   attackSpeed: 1.5
   attackDamage: 20
   attackRadius: 1
+  expBonusAmount: 10
 --- !u!1 &3835224063504672258
 GameObject:
   m_ObjectHideFlags: 0
