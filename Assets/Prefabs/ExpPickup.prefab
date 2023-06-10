@@ -150,6 +150,6 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   xpAmount: 1
-  pickupDistance: 0.8
+  pickupDistance: 1.3
   timeBetweenChecks: 0.2
   moveSpeed: 2

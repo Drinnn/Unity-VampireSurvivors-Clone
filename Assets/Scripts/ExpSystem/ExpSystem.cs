@@ -37,6 +37,10 @@ public class ExpSystem : MonoBehaviour
     public void AddXp(float amount)
     {
         _currentXp += amount;
+        if (_currentXp >= _expLevels[_currentLevel])
+        {
+            _currentLevel++;
+        }
     }
 
     public void SpawnExpPickup(Vector3 position, float bonusAmount)
