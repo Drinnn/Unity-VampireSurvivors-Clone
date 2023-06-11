@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: ExpLevelConfig
   m_EditorClassIdentifier: 
   levelAmount: 100
-  initialLevelExp: 10
-  levelMultiplier: 1.1
+  initialLevelExp: 20
+  levelMultiplier: 1.5
