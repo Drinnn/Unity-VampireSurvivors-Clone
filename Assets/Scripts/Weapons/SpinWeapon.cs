@@ -1,37 +1,48 @@
 using UnityEngine;
 
-public class SpinWeapon : MonoBehaviour
+public class SpinWeapon : BaseWeapon
 {
-    [SerializeField] private Transform holder;
-    [SerializeField] private float rotationSpeed = 200f;
-    
-    [SerializeField] private Transform weaponToSpawn;
-    [SerializeField] private float timeBetweenSpawns = 3f;
-    [SerializeField] private float weaponLifetime = 2f;
+    private float _rotationSpeed;
+    private GameObject _spawnable;
+    private float _spawnableLifetime;
+    private float _timeBetweenSpawnableSpawns;
 
-    private float _spawnTimer;
+    protected override void Setup()
+    {
+        var playerLevel = ExpSystem.Instance.CurrentLevel;
+        
+        _rotationSpeed = weaponObjectSO.levelStatsDictionary.GetValueByKey(playerLevel).speed;
+        _spawnable = weaponObjectSO.spawnable;
+        _spawnableLifetime = weaponObjectSO.levelStatsDictionary.GetValueByKey(playerLevel).duration;
+        _timeBetweenSpawnableSpawns = weaponObjectSO.levelStatsDictionary.GetValueByKey(playerLevel).timeBetweenSpawns;
+
+        isReady = true;
+    }
 
     private void Update()
     {
-       HandleRotation();
-       HandleSpawns();
+        if (isReady)
+        {
+            HandleRotation();
+            HandleSpawns();
+        }
     }
-
+    
     private void HandleRotation()
     {
-        holder.rotation = Quaternion.Euler(0f, 0f, holder.rotation.eulerAngles.z + rotationSpeed * Time.deltaTime); 
+        holder.rotation = Quaternion.Euler(0f, 0f, holder.rotation.eulerAngles.z + _rotationSpeed * Time.deltaTime); 
     }
-
+    
     private void HandleSpawns()
     {
-        _spawnTimer -= Time.deltaTime;
-        if (_spawnTimer <= 0)
+        spawnTimer -= Time.deltaTime;
+        if (spawnTimer <= 0)
         {
-            GameObject weapon = Instantiate(weaponToSpawn, weaponToSpawn.position, weaponToSpawn.rotation, holder).gameObject;
+            GameObject weapon = Instantiate(_spawnable, _spawnable.transform.position, Quaternion.identity, holder).gameObject;
             weapon.SetActive(true);
-            weapon.GetComponent<IWeaponObject>().Setup(weaponLifetime);
+            weapon.GetComponent<IWeaponObject>().Setup(_spawnableLifetime);
             
-            _spawnTimer = timeBetweenSpawns;
+            spawnTimer = _timeBetweenSpawnableSpawns;
         }
     }
 }
