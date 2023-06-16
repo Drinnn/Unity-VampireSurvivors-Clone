@@ -4,8 +4,13 @@ public class Fireball : MonoBehaviour, IWeaponObject
 {
     [SerializeField] private float growSpeed = 3f;
 
+    private float _rotationSpeed;
+    private float _range;
     private float _lifetime;
+
+    private float _rotationAngle;
     private float _lifetimeTimer;
+    
     private Vector3 _targetSize;
 
     private void Awake()
@@ -13,18 +18,33 @@ public class Fireball : MonoBehaviour, IWeaponObject
         _targetSize = transform.localScale;
         transform.localScale = Vector3.zero;
     }
+    
+    public void Setup(float speed, float damage, float range, float duration)
+    {
+        _rotationSpeed = speed;
+        _range = range;
+        _lifetime = duration;
+        _lifetimeTimer = duration;
+        
+        GetComponent<Damager>().SetAmount(damage);
+    }
 
     private void Update()
     {
-        transform.localScale = Vector3.MoveTowards(transform.localScale, _targetSize, growSpeed * Time.deltaTime);
-
+        HandleRotation();
+        HandleGrow();
         HandleDestroy();
     }
 
-    public void Setup(float lifetime)
+    private void HandleRotation()
     {
-        _lifetime = lifetime;
-        _lifetimeTimer = _lifetime;
+        _rotationAngle += Time.deltaTime * (Mathf.PI / 180f) * _rotationSpeed;
+        transform.position = new Vector3(_range * Mathf.Cos(_rotationAngle), _range * Mathf.Sin(_rotationAngle), 0f) + PlayerController.Instance.transform.position;
+    }
+
+    private void HandleGrow()
+    {
+        transform.localScale = Vector3.MoveTowards(transform.localScale, _targetSize, growSpeed * Time.deltaTime);
     }
 
     private void HandleDestroy()

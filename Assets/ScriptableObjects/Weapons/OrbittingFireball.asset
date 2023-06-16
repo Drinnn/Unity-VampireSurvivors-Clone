@@ -12,13 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 99378f284884d6f409fcf5fefc7bd625, type: 3}
   m_Name: OrbittingFireball
   m_EditorClassIdentifier: 
-  weaponObjectName: Orbitting Fireball
+  weaponName: 
   levelStatsDictionary:
     keys: 01000000
     values:
     - speed: 200
       damage: 10
-      range: 0
+      range: 3
       timeBetweenSpawns: 3
       amount: 1
       duration: 2
