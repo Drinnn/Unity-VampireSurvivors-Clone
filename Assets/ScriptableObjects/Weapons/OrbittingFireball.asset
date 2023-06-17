@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponName: 
   levelStatsDictionary:
-    keys: 01000000050000000a0000000f00000014000000
+    keys: 0100000002000000030000000400000005000000
     values:
     - speed: 160
       damage: 10
