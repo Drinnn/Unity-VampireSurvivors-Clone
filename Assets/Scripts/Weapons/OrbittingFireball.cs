@@ -1,4 +1,4 @@
-using System;
+using System.Linq;
 using UnityEngine;
 
 public class OrbittingFireball : MonoBehaviour
@@ -28,6 +28,8 @@ public class OrbittingFireball : MonoBehaviour
 
     private WeaponStats GetCurrentLevelStats()
     {
-        return weaponSO.levelStatsDictionary.GetValueByKey(ExpSystem.Instance.CurrentLevel);
+        var currentWeaponLevel = weaponSO.levelStatsDictionary.keys.Last(key => key <= ExpSystem.Instance.CurrentLevel);
+
+        return weaponSO.levelStatsDictionary.GetValueByKey(currentWeaponLevel);
     }
 }

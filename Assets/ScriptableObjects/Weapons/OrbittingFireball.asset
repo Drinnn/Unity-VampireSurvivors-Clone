@@ -14,11 +14,35 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponName: 
   levelStatsDictionary:
-    keys: 01000000
+    keys: 01000000050000000a0000000f00000014000000
     values:
-    - speed: 200
+    - speed: 160
       damage: 10
-      range: 3
+      range: 1
+      timeBetweenSpawns: 3
+      amount: 1
+      duration: 2
+    - speed: 176
+      damage: 15
+      range: 1.5
+      timeBetweenSpawns: 3
+      amount: 1
+      duration: 2
+    - speed: 193.6
+      damage: 22.5
+      range: 2.25
+      timeBetweenSpawns: 3
+      amount: 1
+      duration: 2
+    - speed: 212.96
+      damage: 33.75
+      range: 3.375
+      timeBetweenSpawns: 3
+      amount: 1
+      duration: 2
+    - speed: 234.256
+      damage: 38.8125
+      range: 5.0625
       timeBetweenSpawns: 3
       amount: 1
       duration: 2
